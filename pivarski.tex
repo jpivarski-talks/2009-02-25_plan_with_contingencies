@@ -1,0 +1,265 @@
+\documentclass[compress]{beamer}
+\usepackage{ifthen,verbatim,ulem}
+
+\newcommand{\isnote}{}
+\xdefinecolor{lightyellow}{rgb}{1.,1.,0.25}
+\xdefinecolor{darkblue}{rgb}{0.1,0.1,0.7}
+
+%% Uncomment this to get annotations
+%% \def\notes{\addtocounter{page}{-1}
+%%            \renewcommand{\isnote}{*}
+%% 	   \beamertemplateshadingbackground{lightyellow}{white}
+%%            \begin{frame}
+%%            \frametitle{Notes for the previous page (page \insertpagenumber)}
+%%            \itemize}
+%% \def\endnotes{\enditemize
+%% 	      \end{frame}
+%%               \beamertemplateshadingbackground{white}{white}
+%%               \renewcommand{\isnote}{}}
+
+%% Uncomment this to not get annotations
+\def\notes{\comment}
+\def\endnotes{\endcomment}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{\mbox{ } \hfill
+\begin{minipage}{5.5 cm}
+\vspace{-0.75 cm} \small
+\end{minipage} \hfill
+\begin{minipage}{4.5 cm}
+\vspace{-0.75 cm} \small
+\begin{flushright}
+\ifthenelse{\equal{\insertpagenumber}{1}}{}{Jim Pivarski \hspace{0.2 cm} \insertpagenumber\isnote/\pageref{numpages}}
+\end{flushright}
+\end{minipage}\mbox{\hspace{0.2 cm}}\includegraphics[height=1 cm]{../cmslogo} \hspace{0.1 cm} \includegraphics[height=1 cm]{../tamulogo} \hspace{0.01 cm} \vspace{-1.05 cm}}
+
+\begin{document}
+\begin{frame}
+\vfill
+\begin{center}
+\textcolor{darkblue}{\Large Alignment Combination Plans with Contingencies}
+
+\vfill
+\begin{columns}
+\column{0.3\linewidth}
+\begin{center}
+\large
+\textcolor{darkblue}{Jim Pivarski}
+\end{center}
+\end{columns}
+
+\begin{columns}
+\column{0.3\linewidth}
+\begin{center}
+\scriptsize
+{\it Texas A\&M University}
+\end{center}
+\end{columns}
+
+\vfill
+25 February, 2009
+
+\end{center}
+\end{frame}
+
+%% \begin{notes}
+%% \item This is the annotated version of my talk.
+%% \item If you want the version that I am presenting, download the one
+%% labeled ``slides'' on Indico (or just ignore these yellow pages).
+%% \item The annotated version is provided for extra detail and a written
+%% record of comments that I intend to make orally.
+%% \item Yellow notes refer to the content on the {\it previous} page.
+%% \item All other slides are identical for the two versions.
+%% \end{notes}
+
+\small
+
+\begin{frame}
+\frametitle{Outline}
+\begin{itemize}\setlength{\itemsep}{0.75 cm}
+\item Expanded version of the CSC alignment combination procedure I
+  presented last CMS Week
+\item Emphasis: each procedure must input and output \mbox{CSCAlignmentRcds,\hspace{-1 cm}}
+  modifying only the parameters they best measure
+\item Similar idea for DT alignment
+\end{itemize}
+%% \hspace{-0.83 cm} \textcolor{darkblue}{\Large Outline2}
+\end{frame}
+
+\begin{frame}
+\frametitle{Available CSC Procedures}
+{\scriptsize (all parameters are local: e.g.\ $x$ is $r\phi$, $y$ is radial)}
+
+\renewcommand{\arraystretch}{1.25}
+
+\begin{tabular}{c p{0.25\linewidth} p{0.2\linewidth} p{0.4\linewidth}}
+$\surd$ & Chamber \mbox{Photogrammetry} & $x$, $y$, $z$, $\phi_x$, $\phi_z$ chambers relative to disks & \mbox{100\% valid at $\vec{B}=0$~T,} some parameters are invalid when $\vec{B}>0$ \mbox{(mostly $y$, $z$, $\phi_x$)\hspace{-1 cm}} \\\hline
+& \mbox{Transfer lines} \mbox{and/or cavern} photogrammetry & 6 dof for disks & puts chamber coordinates into global frame, but need to connect physical measurements with (a)~chamber centers and (b)~the tracker \\\hline
+$\surd$ & DCOPS/SLM disk bending & average $z$ and $\phi_x$ for rings & corrects for large deviations due to $\vec{B}$-field \\\hline
+& StandAloneMuon cosmics alignment & 6 dof for disks or $x$, $z$, $\phi_y$, $\phi_z$ for chambers & barrel (reference) needs to be better aligned, track refitter may need more debugging \\\hline
+$\surd$ & Beam-halo Overlaps alignment & $x$, $\phi_y$, $\phi_z$ relative to ring & needs beam-halo (Aug--Oct) \\\hline
+$\surd$ & Collisions muon alignment & \mbox{6 dof for disks} \mbox{or $x$, $z$, $\phi_y$, $\phi_z$} for chambers & needs collisions ($\ge$ Nov) \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{Combining what we have now}
+
+\textcolor{darkblue}{(1) Chamber photogrammetry $\to$ (2) DCOPS/SLM disk bending}
+\begin{itemize}
+\item Realistic local $x$ positions (assume effect of $\vec{B}$-field is in $z$ and stretching is radial, as symmetry implies)
+\item Realistic $z$ bulge and radial bending (at least the $\phi_x$ part, if not $y$)
+\item But: no alignment of whole disks in CMS coordinates, which reduces the usefulness of the new local alignment
+\end{itemize}
+
+\vspace{0.2 cm}
+\hspace{-0.83 cm} \textcolor{darkblue}{\Large Ways to improve this before collisions}
+
+\vspace{0.1 cm}
+Any one of the following would improve the alignment; more than one would provide cross-checks:
+
+\begin{itemize}
+\item Add a photogrammetry-relative-to-cavern alignment at the beginning \textcolor{darkblue}{(step 1.5)}
+\begin{itemize}
+\item and again assume that the $\vec{B}$-field effects are $\phi$-symmetric
+\item still doesn't connect to the tracker
+\end{itemize}
+\item Add a transfer line measurement at the end \textcolor{darkblue}{(step 3)}
+\begin{itemize}
+\item need to propagate tracker coordinate system through the TEC
+\end{itemize}
+\item Add a standAloneMuon cosmics alignment at the end \textcolor{darkblue}{(step 3 or 4)}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Combining steps: implementation}
+\begin{itemize}\setlength{\itemsep}{0.35 cm}
+\item Every alignment step should do the following:
+\begin{enumerate}\setlength{\itemsep}{0.2 cm}
+\item read an input geometry in CSCAlignmentRcd format \\ (except chamber photogrammetry because it's first)
+\item apply corrections to the parameters the procedure can \mbox{measure;\hspace{-1 cm}} \\ don't modify the parameters that were better determined by previous steps
+\item write a modified geometry in CSCAlignmentRcd format
+\end{enumerate}
+
+\item If using XML tools, {\tt <moveglobal>}, {\tt <movelocal>}, and
+  {\tt <rotatelocal>} provide this functionality
+
+\item This creates a chain of working alignment procedures in which the
+  best information is passed through to the end
+
+\item Much easier to understand the results than a global fit that
+  includes different methods in a single $\chi^2$ minimization
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Redundant measurements}
+\begin{itemize}\setlength{\itemsep}{0.25 cm}
+\item Tracks measure CSC $x$ and $z$ parameters, but not with equal
+  precision because they're determined in rather different ways:
+\begin{itemize}\setlength{\itemsep}{0.1 cm}
+\item $x$ is essentially an average of the whole residuals distribution
+\item $z$ is a linear trend in that distribution
+\end{itemize}
+
+
+\item DCOPS measure CSC $x$ and $z$ parameters directly, with $\sim$equal precision because they're measured the same way: \mbox{laser cross-hair\hspace{-1 cm}}
+
+\item Example:
+\begin{itemize}\setlength{\itemsep}{0.1 cm}
+\item suppose track $x$ accuracy is 0.3~mm and $z$ is 3~mm \\
+{\scriptsize (and assume this was determined by comparing different track methods)}
+\item suppose DCOPS reproduces $x$ with 1~mm and $z$ with 3~mm
+\item in this case, tracks provide 0.3~mm resolution in $x$ \\ and DCOPS provide \underline{1~mm} resolution in $z$
+\end{itemize}
+
+\item Cross-checks (e.g.\ DCOPS $x$ above) are not wasted measurements: they
+  go into the physics analysis as tighter MC alignment scenarios,
+  because we're more confident in the geometry (in $z$ in this case)
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Available DT procedures}
+
+{\scriptsize (all parameters are local: e.g.\ $x$ is $r\phi$, $y$ is along the beamline, $z$ is radial)}
+
+\renewcommand{\arraystretch}{1.25}
+
+\begin{tabular}{c p{0.25\linewidth} p{0.2\linewidth} p{0.4\linewidth}}
+$\surd$ & Photogrammetry/ survey & \mbox{6 dof} \mbox{(stand-alone)} & \mbox{100\% valid at $\vec{B}=0$~T, much} less $\vec{B}$ distortion than endcap \\\hline
+$\surd$ & MillePede \mbox{algorithm} & \mbox{6 dof} \mbox{(stand-alone)} & with survey constraint, it's a tracks/survey average: what are the weights? \\\hline
+& Hardware \mbox{alignment} & \mbox{6 dof} \mbox{(stand-alone)} & I see that progress is being made \\\hline
+$\surd$ & GlobalMuon \mbox{alignment} & \mbox{now: $x$, $y$, $\phi_z$} \mbox{soon: 6 dof} & cosmic rays don't provide complete coverage \\\hline
+& StandAloneMuon cosmics alignment & same 6 dof & \mbox{more complete coverage,} \mbox{using aligned chambers as} reference \\
+\end{tabular}
+
+\begin{itemize}
+\item We've exercised \textcolor{darkblue}{(1) Survey $+$ MillePede $\to$ (2) GlobalMuon} using DTAlignmentRcds for communication
+\item I don't yet know which of the 6 parameters will be better determined by which procedure
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Methods to determine accuracy}
+\begin{itemize}
+\item When hardware and track-based alignments agree, they're both right \\
+(RMS of chamber-by-chamber differences is the sum in quadrature of the accuracies of the two methods)
+\item When they disagree, one or both is wrong \\
+(pattern of systematic disagreement can be a useful clue)
+\item Disagreement or lack of comparison forces us to use internal
+  cross-checks to determine accuracy independently
+\item Internal cross-checks for track-based alignment:
+\begin{itemize}
+\item agreement between tracks from different directions and checking consistency of $A-B$, $B-C$, $A-C$ triangles % \mbox{(e.g.\ cosmics)\hspace{-1 cm}}
+\item correlation of residuals within chambers, \mbox{discontinuities at borders\hspace{-1 cm}}
+\item computing same parameter from different kinds of residuals % \mbox{(e.g.\ $z$ \& $\phi_z$)\hspace{-1 cm}}
+\item closure conditions for circular rings of chambers
+\item Monte Carlo studies with a given set of systematics
+\end{itemize}
+\item I expect that hardware and photogrammetry have methods of
+  internally determining accuracy of each parameter, too
+\item They'll be necessary to objectively decide which to use \mbox{from each\hspace{-1 cm}}
+\end{itemize}
+\end{frame}
+
+
+%% \section*{First section}
+%% \begin{frame}
+%% \begin{center}
+%% \Huge \textcolor{blue}{First section}
+%% \end{center}
+%% \end{frame}
+
+\begin{frame}
+\frametitle{Conclusions}
+\begin{itemize}\setlength{\itemsep}{0.25 cm}
+\item The {\it technical} problem of merging alignment results can be
+  solved by each procedure reading and writing in AlignmentRcd format,
+  and only modifying best-measured parameters
+\begin{itemize}
+\item can be done with existing XML tools
+\end{itemize}
+
+\item Deciding which alignment procedures have the best measurement of
+  a given parameter will require internal cross-checks (determining
+  track accuracy using only tracks and determining hardware accuracy
+  using only hardware)
+
+\item For the endcaps, we already have enough resolution data to know
+  what the combined procedure will probably look like:
+
+\vspace{0.1 cm}
+(1) Photogrammetry $\to$ (2) DCOPS disk bending $\to$ (3) Transfer line disk position? $\to$ (4) GlobalMuon alignment in $x$, $\phi_y$, $\phi_z$
+
+\begin{itemize}
+\item opportunity to cross-check DCOPS and track-based in $x$ and $z$
+\end{itemize}
+
+\end{itemize}
+\label{numpages}
+\end{frame}
+
+\end{document}
